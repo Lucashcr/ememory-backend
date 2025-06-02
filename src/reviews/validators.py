@@ -12,8 +12,5 @@ def hexadecimal_color_validator(value: str):
 
 
 def initial_date_validator(value: date):
-    print("Initial date validator called")
-    print(value)
-    print(date.today())
     if value < date.today():
         raise ValidationError("Initial date cannot be in the past")
