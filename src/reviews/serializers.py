@@ -14,11 +14,6 @@ class ReviewInfoSerializer(ModelSerializer):
         class Meta:
             model = ReviewSchedule
             fields = ["scheduled_for", "status"]
-    
-    class SubjectSerializer(ModelSerializer):
-        class Meta:
-            model = Subject
-            fields = ["name", "color"]
 
     review_dates = ReviewDatesSerializer(
         many=True,
