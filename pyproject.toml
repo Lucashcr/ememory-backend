@@ -20,10 +20,6 @@ dependencies = [
 package-mode = false
 packages = [{include = "e_memory", from = "src"}]
 
-[tool.poetry.scripts]
-start = "uvicorn e_memory.main:app"
-dev = "uvicorn --reload e_memory.main:app"
-
 [tool.poetry.group.dev.dependencies]
 django-stubs = "^5.1.3"
 
