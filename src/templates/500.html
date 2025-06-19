@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static '/e_memory/css/error-page.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Ops! Aconteceu um erro inesperado!</h1>
+    <p>Parece que algo deu errado no nosso site. Isso pode ser devido a um erro interno ou a um problema temporário. Por favor, tente novamente mais tarde ou entre em contato com o suporte se o problema persistir.</p>
+    <a href="/" class="go-home-btn">Página Inicial</a>
+  </div>
+{% endblock %}

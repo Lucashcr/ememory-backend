@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.container h1 {
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--dark-color);
+}
+
+.container p {
+    text-align: center;
+}
+
+.container .go-home-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.8rem;
+    font-weight: bold;
+}
+
+.container .go-home-btn:hover {
+    background-color: var(--accent-color);
+}
