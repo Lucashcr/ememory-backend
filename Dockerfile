@@ -35,7 +35,7 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 WORKDIR /app
 
-COPY --chown=appuser:appuser ./src/* .
+COPY --chown=appuser:appuser ./src/**/* .
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
