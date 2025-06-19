@@ -20,7 +20,9 @@ COPY requirements.txt /app/
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-FROM python:3.13-slim
+# ---------------------------------------------------------------------------------
+
+FROM python:3.13-slim AS runtime
 
 RUN apt-get update && apt-get install -y \
     libmariadb3 \
@@ -35,10 +37,11 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 WORKDIR /app
 
-COPY --chown=appuser:appuser ./src/**/* .
+COPY --chown=appuser:appuser ./src/ .
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH="/app/src"
 
 USER appuser
 
