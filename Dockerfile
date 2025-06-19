@@ -1,9 +1,18 @@
 FROM python:3.13-slim AS builder
 
+RUN mkdir /app
+
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libmariadb-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade pip
 
@@ -12,6 +21,10 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 FROM python:3.13-slim
+
+RUN apt-get update && apt-get install -y \
+    libmariadb3 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -r appuser && \
    mkdir /app && \
@@ -22,7 +35,7 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 WORKDIR /app
 
-COPY --chown=appuser:appuser . .
+COPY --chown=appuser:appuser ./src/* .
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -31,4 +44,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "8", "my_docker_django_app.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "8", "e_memory.wsgi:application"]
