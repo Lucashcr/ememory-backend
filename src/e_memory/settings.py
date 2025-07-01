@@ -32,7 +32,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False # os.environ.get("DEBUG", False)
+DEBUG = os.environ.get("DEBUG", False)
 
 # Application definition
 INSTALLED_APPS = [

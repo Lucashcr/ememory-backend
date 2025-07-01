@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, UUIDField, CharField
+from rest_framework.serializers import BooleanField, ModelSerializer, UUIDField
 
 from reviews.models import ReviewInfo, ReviewSchedule, Subject
 
@@ -26,9 +26,12 @@ class ReviewInfoSerializer(ModelSerializer):
     subject_id = UUIDField(
         write_only=True,
     )
+    mark_first = BooleanField(
+        write_only=True
+    )
 
     class Meta:
         model = ReviewInfo
-        fields = ["id", "topic", "subject", "subject_id", "notes", "initial_date", "review_dates"]
+        fields = ["id", "topic", "subject", "subject_id", "notes", "initial_date", "review_dates", "mark_first"]
         read_only_fields = ["subject", "review_dates"]
-        write_only_fields = ["subject_id"]
+        write_only_fields = ["subject_id", "mark_first"]

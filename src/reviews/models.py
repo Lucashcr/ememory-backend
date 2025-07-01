@@ -1,9 +1,7 @@
-from datetime import timedelta
 from uuid import uuid4
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.dispatch import receiver
 
 from reviews.validators import hexadecimal_color_validator, initial_date_validator
 
@@ -71,24 +69,3 @@ class ReviewSchedule(models.Model):
 
     def __str__(self):
         return f"{self.review_info.topic} ({self.review_info.user}) - {self.scheduled_for}"
-
-
-INTERVALS = [0, 1, 7, 14, 28, 56]
-
-@receiver(models.signals.post_save, sender=ReviewInfo)
-def handle_schedule_reviews(sender, instance, created, **kwargs):
-    if created:
-        for interval in INTERVALS:
-            scheduled_date = instance.initial_date + timedelta(days=interval)
-            ReviewSchedule.objects.create(
-                review_info=instance,
-                scheduled_for=scheduled_date,
-                status="pending",
-            )
-    else:
-        schedules = instance.schedules.all()
-        for interval, schedule in zip(INTERVALS, schedules):
-            scheduled_date = instance.initial_date + timedelta(days=interval)
-            schedule.scheduled_for = scheduled_date
-            schedule.status = "pending"
-        ReviewSchedule.objects.bulk_update(schedules, ["scheduled_for", "status"])
