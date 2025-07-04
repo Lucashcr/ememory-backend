@@ -32,7 +32,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG", False))
+DEBUG = os.environ.get("DEBUG", False)
 
 # Application definition
 INSTALLED_APPS = [
@@ -49,9 +49,14 @@ INSTALLED_APPS = [
     "emauth",
 ]
 
+if DEBUG:
+    INSTALLED_APPS = [
+        "whitenoise.runserver_nostatic",
+    ] + INSTALLED_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -126,6 +131,26 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = "emauth.User"
 
+DJOSER = {
+    "USER_ID_FIELD": "id",
+    "LOGIN_FIELD": "email",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/reset_password/{uid}/{token}/",
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "LOGOUT_ON_PASSWORD_CHANGE": True,
+}
+
+# Email settings
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Optional: Set the default sender email
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
