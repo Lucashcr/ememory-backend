@@ -1,3 +1,10 @@
+const ERROR_KEYS = [
+    'new_password',
+    're_new_password',
+    'non_field_errors',
+    'detail'
+]
+
 const form = document.getElementById('reset-password-confirm-form');
 form.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -37,7 +44,14 @@ form.addEventListener('submit', function (event) {
                 alert("Sua senha foi alterada com sucesso!");
             } else {
                 return response.json().then(data => {
-                    const message = data.new_password ? data.new_password.join("\n") : "Erro desconhecido";
+                    let errors = [];
+                    for (const key of ERROR_KEYS) {
+                        if (data[key]) {
+                            errors.push(...data[key]);
+                        }
+                    }
+
+                    const message = errors.length > 0 ? errors.join('\n') : "Erro desconhecido";
                     throw new Error(message);
                 });
             }
